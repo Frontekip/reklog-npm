@@ -3,7 +3,7 @@ const axios = require('axios');
 class RekLog {
   constructor(apiKey, options = {}) {
     this.apiKey = apiKey;
-    this.apiUrl = options.apiUrl || 'https://www.reklog.com/api';
+    this.apiUrl = options.apiUrl || 'https://api.reklog.com/api';
     this.activeLogs = new Map();
     this.retryAttempts = options.retryAttempts || 3;
     this.retryDelay = options.retryDelay || 1000;
