@@ -8,7 +8,7 @@ class RekLog {
     this.retryAttempts = options.retryAttempts || 3;
     this.retryDelay = options.retryDelay || 1000;
     this.debug = options.debug || false;
-    this.environment = options.environment || process.env.NODE_ENV || 'development';
+    this.environment = options.environment || 'development';
     this.host = options.host || null;
 
     if (!apiKey) {
@@ -24,12 +24,11 @@ class RekLog {
    */
   start(endpoint, method = 'GET') {
     const logId = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const startTime = process.hrtime.bigint();
 
     this.activeLogs.set(logId, {
       endpoint,
       method: method.toUpperCase(),
-      startTime
+      startTime: performance.now()
     });
 
     return logId;
@@ -48,8 +47,7 @@ class RekLog {
       return;
     }
 
-    const endTime = process.hrtime.bigint();
-    const responseTime = Number((endTime - log.startTime) / 1000000n); // Convert nanoseconds to milliseconds
+    const responseTime = performance.now() - log.startTime;
 
     if (this.debug) {
       console.log('RekLog.end() options:', options);
@@ -114,14 +112,13 @@ class RekLog {
   middleware() {
     return (req, res, next) => {
       const logId = this.start(req.path, req.method);
-      const startTime = process.hrtime.bigint();
+      const startTime = performance.now();
 
       const originalSend = res.send;
       const self = this;
 
       res.send = function(data) {
-        const endTime = process.hrtime.bigint();
-        const responseTime = Number((endTime - startTime) / 1000000n); // Convert nanoseconds to milliseconds
+        const responseTime = performance.now() - startTime;
 
         // Parse response
         let response = null;
