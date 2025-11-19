@@ -184,7 +184,6 @@ End tracking and send log to server.
 | `requestHeaders` | object | `null` | Request headers |
 | `response` | object | `null` | Response data |
 | `metadata` | object | `{}` | Additional custom data |
-| `environment` | string | init value | Override environment |
 
 ### middleware()
 

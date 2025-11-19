@@ -66,7 +66,7 @@ class RekLog {
   /**
    * End tracking a request and send log to server
    * @param {string} logId - The log identifier from start()
-   * @param {object} options - Additional options (statusCode, metadata, environment)
+   * @param {object} options - Additional options (statusCode, metadata)
    */
   async end(logId, options = {}) {
     const log = this.activeLogs.get(logId);
@@ -88,7 +88,7 @@ class RekLog {
       method: log.method,
       responseTime,
       statusCode: options.statusCode || 200,
-      environment: options.environment || this.environment,
+      environment: this.environment,
       host: this.host,
       body: this.maskSensitiveData(options.body) || null,
       params: this.maskSensitiveData(options.params) || null,

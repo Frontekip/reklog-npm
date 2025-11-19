@@ -1,6 +1,6 @@
 {
   "name": "reklog",
-  "version": "0.0.19",
+  "version": "0.0.21",
   "description": "Request logging package for tracking API response times and performance",
   "main": "src/index.js",
   "keywords": [
