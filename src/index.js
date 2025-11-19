@@ -9,11 +9,10 @@ class RekLog {
     this.environment = options.environment || 'development';
     this.host = options.host || null;
 
-    // Default sensitive fields to mask
-    const defaultMaskFields = ['password', 'token', 'secret', 'authorization', 'api_key', 'apikey', 'access_token', 'refresh_token', 'credit_card', 'cvv', 'ssn'];
+    // Fields to mask (user-defined, no defaults)
     this.maskFields = options.maskFields
-      ? [...new Set([...defaultMaskFields, ...options.maskFields])].map(f => f.toLowerCase())
-      : defaultMaskFields;
+      ? options.maskFields.map(f => f.toLowerCase())
+      : [];
 
     if (!apiKey) {
       throw new Error('RekLog: API key is required');

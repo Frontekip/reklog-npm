@@ -107,35 +107,21 @@ Initialize RekLog instance.
 | `debug` | boolean | `false` | Enable debug logging |
 | `retryAttempts` | number | `3` | Retry attempts on failure |
 | `retryDelay` | number | `1000` | Delay between retries (ms) |
-| `maskFields` | array | See below | Additional fields to mask |
+| `maskFields` | array | `[]` | Fields to mask |
 
 ---
 
 ## Data Privacy & Field Masking
 
-RekLog automatically masks sensitive data to protect user privacy and comply with data protection regulations. Sensitive field values are replaced with `********` before being sent to the server.
+RekLog can mask sensitive data to protect user privacy and comply with data protection regulations. Sensitive field values are replaced with `********` before being sent to the server.
 
-### Default Masked Fields
+### Configuring Fields to Mask
 
-The following fields are masked by default:
-- `password`
-- `token`
-- `secret`
-- `authorization`
-- `api_key` / `apikey`
-- `access_token`
-- `refresh_token`
-- `credit_card`
-- `cvv`
-- `ssn`
-
-### Adding Custom Fields to Mask
-
-You can add additional fields to mask using the `maskFields` option:
+Use the `maskFields` option to specify which fields should be masked:
 
 ```javascript
 const logger = reklog.init('rkl_your_api_key', {
-  maskFields: ['pin', 'social_security', 'bank_account', 'private_key']
+  maskFields: ['password', 'token', 'secret', 'api_key', 'credit_card', 'cvv', 'ssn']
 });
 ```
 
@@ -155,19 +141,19 @@ Field masking is:
   "password": "secret123",
   "profile": {
     "name": "John Doe",
-    "api_token": "tok_abc123"
+    "pin": "1234"
   }
 }
 ```
 
-**Logged Data (with maskFields: ['api_token']):**
+**Logged Data (with maskFields: ['password', 'pin']):**
 ```json
 {
   "email": "user@example.com",
   "password": "********",
   "profile": {
     "name": "John Doe",
-    "api_token": "********"
+    "pin": "********"
   }
 }
 ```
